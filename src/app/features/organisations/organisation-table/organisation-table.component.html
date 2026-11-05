@@ -1,0 +1,68 @@
+<div class="table-wrap">
+  <table class="table">
+    <caption class="visually-hidden">{{ 'table.caption' | t }}</caption>
+    <thead>
+      <tr>
+        @for (column of columns; track column.key) {
+          <th scope="col" [class.num]="column.numeric" [attr.aria-sort]="ariaSort(column.key)">
+            <button
+              type="button"
+              class="sort"
+              [attr.data-sort]="ariaSort(column.key)"
+              (click)="sortChange.emit(column.key)"
+            >
+              {{ column.label | t }}
+            </button>
+          </th>
+        }
+      </tr>
+      <tr app-column-filters [filters]="filters()" (filtersChange)="filtersChange.emit($event)"></tr>
+    </thead>
+    <tbody>
+      @for (org of organisations(); track org.key) {
+        <tr class="row" (click)="select.emit(org)">
+          <td class="name">
+            <button type="button" class="identity" aria-haspopup="dialog">
+              <app-organisation-avatar [name]="org.name" [seed]="org.id" />
+              <span class="identity__text">
+                <span class="identity__name">
+                  @if (org.name) {
+                    <bdi>{{ org.name }}</bdi>
+                  } @else {
+                    <span class="muted">{{ 'table.unnamed' | t }}</span>
+                  }
+                </span>
+                <span class="identity__id">{{ 'table.id' | t: { id: org.id } }}</span>
+              </span>
+            </button>
+          </td>
+          <td [attr.data-label]="'table.status' | t"><app-organisation-status [status]="org.status" /></td>
+          <td class="num" [attr.data-label]="'table.members' | t">
+            @if (org.memberCount !== null) {
+              {{ org.memberCount | number }}
+            } @else {
+              <span class="muted">{{ 'table.missing' | t }}</span>
+            }
+          </td>
+          <td class="owner" [attr.data-label]="'table.owner' | t">
+            @if (org.ownerEmail) {
+              {{ org.ownerEmail }}
+              @if (!org.ownerEmailValid) {
+                <span class="warning">{{ 'table.invalidEmail' | t }}</span>
+              }
+            } @else {
+              <span class="muted">{{ 'table.missing' | t }}</span>
+            }
+          </td>
+          <td [attr.data-label]="'table.created' | t">
+            @if (org.createdAt !== null) {
+              {{ org.createdAt | date: 'mediumDate' : 'UTC' }}
+            } @else {
+              <span class="muted">{{ 'table.missing' | t }}</span>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
