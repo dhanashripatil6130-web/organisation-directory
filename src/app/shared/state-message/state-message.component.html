@@ -1,0 +1,5 @@
+<div class="state" [class]="'state state--' + kind()" [attr.role]="role()">
+  <h2 class="state__title">{{ 'state.' + kind() + '.title' | t }}</h2>
+  <p>{{ message() | t }}</p>
+  <ng-content />
+</div>
