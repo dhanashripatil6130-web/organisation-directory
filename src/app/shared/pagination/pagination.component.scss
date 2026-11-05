@@ -1,0 +1,128 @@
+@use 'breakpoints' as bp;
+
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: var(--border-width) solid var(--color-border);
+
+  &__summary,
+  &__pages {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  &__summary {
+    gap: var(--space-6);
+  }
+
+  &__range,
+  &__size {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  &__size {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  &__select {
+    min-height: var(--control-height-sm);
+    padding: 0 var(--space-2);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font: inherit;
+  }
+
+  &__page,
+  &__nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    min-width: var(--pager-button-size);
+    height: var(--pager-button-size);
+    padding: 0 var(--space-2);
+    border: var(--border-width) solid transparent;
+    border-radius: var(--radius);
+    background: none;
+    color: var(--color-text);
+    font: inherit;
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: var(--color-brand-subtle);
+    }
+
+    &:disabled {
+      color: var(--color-text-muted);
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    svg {
+      width: var(--space-4);
+      height: var(--space-4);
+      fill: none;
+      stroke: currentcolor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  }
+
+  &__nav {
+    border-color: var(--color-border);
+    padding: 0 var(--space-3);
+  }
+
+  &__page--current {
+    border-color: var(--color-brand);
+    background: var(--color-brand);
+    color: var(--color-on-brand);
+
+    &:hover:not(:disabled) {
+      background: var(--color-brand-hover);
+    }
+  }
+
+  &__gap {
+    min-width: var(--space-6);
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+}
+
+@media (max-width: bp.$narrow) {
+  .pager {
+    justify-content: center;
+
+    &__summary {
+      gap: var(--space-2) var(--space-4);
+      justify-content: center;
+    }
+
+    &__label {
+      position: absolute;
+      width: var(--border-width);
+      height: var(--border-width);
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    &__nav {
+      padding: 0 var(--space-2);
+    }
+  }
+}
