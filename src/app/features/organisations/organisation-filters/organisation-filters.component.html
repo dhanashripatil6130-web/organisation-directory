@@ -1,0 +1,20 @@
+<div class="filters" role="search">
+  <div class="field">
+    <label class="field__label" for="org-search">{{ 'filters.search.label' | t }}</label>
+    <div class="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></svg>
+      <input
+        id="org-search"
+        class="field__control"
+        type="search"
+        autocomplete="off"
+        [formControl]="searchControl"
+        [placeholder]="'filters.search.placeholder' | t"
+      />
+    </div>
+  </div>
+
+  <button type="button" class="btn" [disabled]="!active()" (click)="cleared.emit()">
+    {{ 'filters.clear' | t }}
+  </button>
+</div>

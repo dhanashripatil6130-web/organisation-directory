@@ -1,0 +1,47 @@
+<td [attr.data-label]="'table.name' | t">
+  <input
+    class="column-filter"
+    type="search"
+    autocomplete="off"
+    [formControl]="form.controls.name"
+    [attr.aria-label]="'filters.column.name' | t"
+    [placeholder]="'filters.placeholder' | t"
+  />
+</td>
+<td [attr.data-label]="'table.status' | t">
+  <select class="column-filter" [formControl]="form.controls.status" [attr.aria-label]="'filters.column.status' | t">
+    <option value="">{{ 'filters.status.all' | t }}</option>
+    @for (option of statuses; track option) {
+      <option [value]="option">{{ 'status.' + option | t }}</option>
+    }
+  </select>
+</td>
+<td [attr.data-label]="'table.members' | t">
+  <input
+    class="column-filter"
+    type="text"
+    inputmode="numeric"
+    autocomplete="off"
+    [formControl]="form.controls.minMembers"
+    [attr.aria-label]="'filters.column.minMembers' | t"
+    [placeholder]="'filters.minPlaceholder' | t"
+  />
+</td>
+<td [attr.data-label]="'table.owner' | t">
+  <input
+    class="column-filter"
+    type="search"
+    autocomplete="off"
+    [formControl]="form.controls.owner"
+    [attr.aria-label]="'filters.column.owner' | t"
+    [placeholder]="'filters.placeholder' | t"
+  />
+</td>
+<td [attr.data-label]="'table.created' | t">
+  <input
+    class="column-filter"
+    type="date"
+    [formControl]="form.controls.created"
+    [attr.aria-label]="'filters.column.created' | t"
+  />
+</td>
