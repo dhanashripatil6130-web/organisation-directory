@@ -1,0 +1,97 @@
+<section class="panel" aria-labelledby="dialog-title">
+  <h2 id="dialog-title" class="panel__title">{{ (organisation() ? 'form.editTitle' : 'form.title') | t }}</h2>
+
+  @if (feedback(); as fb) {
+    @switch (fb.kind) {
+      @case ('success') {
+        <p class="alert alert--success" role="status">{{ 'form.success' | t: { name: fb.name ?? '' } }}</p>
+      }
+      @case ('invalid') {
+        <p class="alert alert--error" role="alert">{{ 'form.invalidSummary' | t }}</p>
+      }
+      @case ('error') {
+        <p class="alert alert--error" role="alert">{{ 'form.submitError' | t }}</p>
+      }
+    }
+  }
+
+  <form class="form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="field">
+      <label class="field__label" for="org-name">{{ 'form.name.label' | t }}</label>
+      <input
+        id="org-name"
+        class="field__control"
+        type="text"
+        formControlName="name"
+        autocomplete="off"
+        aria-required="true"
+        aria-describedby="org-name-hint org-name-error"
+        [attr.aria-invalid]="errorKey(form.controls.name) !== null"
+      />
+      <p id="org-name-hint" class="field__hint">{{ 'form.name.hint' | t }}</p>
+      @if (errorKey(form.controls.name); as key) {
+        <p id="org-name-error" class="field__error">{{ key | t: errorParams }}</p>
+      }
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="org-status">{{ 'form.status.label' | t }}</label>
+      <select
+        id="org-status"
+        class="field__control"
+        formControlName="status"
+        aria-required="true"
+        aria-describedby="org-status-error"
+        [attr.aria-invalid]="errorKey(form.controls.status) !== null"
+      >
+        <option value="">{{ 'form.status.placeholder' | t }}</option>
+        @for (option of statuses; track option) {
+          <option [value]="option">{{ 'status.' + option | t }}</option>
+        }
+      </select>
+      @if (errorKey(form.controls.status); as key) {
+        <p id="org-status-error" class="field__error">{{ key | t }}</p>
+      }
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="org-owner-email">{{ 'form.ownerEmail.label' | t }}</label>
+      <input
+        id="org-owner-email"
+        class="field__control"
+        type="email"
+        formControlName="ownerEmail"
+        autocomplete="off"
+        aria-required="true"
+        aria-describedby="org-owner-email-error"
+        [attr.aria-invalid]="errorKey(form.controls.ownerEmail) !== null"
+      />
+      @if (errorKey(form.controls.ownerEmail); as key) {
+        <p id="org-owner-email-error" class="field__error">{{ key | t }}</p>
+      }
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="org-member-count">{{ 'form.memberCount.label' | t }}</label>
+      <input
+        id="org-member-count"
+        class="field__control"
+        type="number"
+        step="1"
+        formControlName="memberCount"
+        aria-describedby="org-member-count-error"
+        [attr.aria-invalid]="errorKey(form.controls.memberCount) !== null"
+      />
+      @if (errorKey(form.controls.memberCount); as key) {
+        <p id="org-member-count-error" class="field__error">{{ key | t }}</p>
+      }
+    </div>
+
+    <div class="form__actions">
+      <button type="submit" class="btn btn--primary" [disabled]="saving()">
+        {{ (saving() ? 'form.saving' : organisation() ? 'form.save' : 'form.submit') | t }}
+      </button>
+      <button type="button" class="btn" (click)="closed.emit()">{{ 'form.close' | t }}</button>
+    </div>
+  </form>
+</section>
