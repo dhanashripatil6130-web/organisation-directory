@@ -1,0 +1,33 @@
+:host {
+  display: inline-flex;
+}
+
+.avatar {
+  --avatar-tone: var(--color-tone-0);
+  display: inline-grid;
+  place-items: center;
+  width: var(--avatar-size, var(--control-height));
+  height: var(--avatar-size, var(--control-height));
+  flex: none;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--avatar-tone) 14%, var(--color-surface));
+  color: var(--avatar-tone);
+  font-size: calc(var(--avatar-size, var(--control-height)) * 0.4);
+  font-weight: var(--font-weight-bold);
+
+  &--1 {
+    --avatar-tone: var(--color-tone-1);
+  }
+
+  &--2 {
+    --avatar-tone: var(--color-tone-2);
+  }
+
+  &--3 {
+    --avatar-tone: var(--color-tone-3);
+  }
+
+  &--4 {
+    --avatar-tone: var(--color-tone-4);
+  }
+}
