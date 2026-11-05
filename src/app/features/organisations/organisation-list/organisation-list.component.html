@@ -1,0 +1,111 @@
+<main class="page">
+  <header class="page__header">
+    <div>
+      <h1 class="page__title">{{ 'list.title' | t }}</h1>
+      <p class="page__subtitle">{{ 'list.subtitle' | t }}</p>
+    </div>
+    <button type="button" class="btn btn--primary" aria-haspopup="dialog" (click)="openDialog({ mode: 'create' })">
+      {{ 'list.create' | t }}
+    </button>
+  </header>
+
+  <section class="summary">
+    <button
+      type="button"
+      class="card card--all"
+      [attr.aria-pressed]="status() === ''"
+      (click)="setStatus('')"
+    >
+      <span class="card__label">{{ 'summary.all' | t }}</span>
+      <span class="card__value">{{ totalMatching() }}</span>
+      <span class="card__bar"><span class="card__fill" [style.width.%]="totalMatching() ? 100 : 0"></span></span>
+    </button>
+    @for (option of statuses; track option) {
+      <button
+        type="button"
+        class="card"
+        [class]="'card card--' + option"
+        [attr.aria-pressed]="status() === option"
+        (click)="setStatus(option)"
+      >
+        <app-organisation-status [status]="option" variant="plain" />
+        <span class="card__value">{{ service.statusCounts()[option] }}</span>
+        <span class="card__bar"><span class="card__fill" [style.width.%]="percent(option)"></span></span>
+      </button>
+    }
+  </section>
+
+  <section class="panel" [attr.aria-busy]="service.loading()">
+    <app-organisation-filters
+      [search]="filters().q"
+      [active]="filtersActive()"
+      (searchChange)="setSearch($event)"
+      (cleared)="clearFilters()"
+    />
+
+    @if (service.error()) {
+      <app-state-message kind="error">
+        <button type="button" class="btn btn--primary" (click)="service.retry()">{{ 'state.retry' | t }}</button>
+      </app-state-message>
+    }
+
+    @if (service.loading()) {
+      @if (!service.loaded()) {
+        <app-state-message kind="loading" />
+      } @else {
+        <p class="panel__note" role="status">{{ 'list.updating' | t }}</p>
+      }
+      @if (service.waitingForRateLimit()) {
+        <p class="panel__note" role="status">{{ 'list.paced' | t: { limit: rateLimit } }}</p>
+      }
+    }
+
+    @if (service.loaded()) {
+      <app-organisation-table
+        [organisations]="service.organisations()"
+        [sort]="sort()"
+        [filters]="filters()"
+        (sortChange)="toggleSort($event)"
+        (filtersChange)="setColumnFilters($event)"
+        (select)="openDialog({ mode: 'view', organisation: $event })"
+      />
+      @if (service.total() === 0) {
+        <app-state-message kind="empty" [messageKey]="filtersActive() ? 'state.empty.noMatch' : undefined" />
+      } @else {
+        <app-pagination
+          [page]="service.page()"
+          [pageSize]="pageSize()"
+          [total]="service.total()"
+          (pageChange)="setPage($event)"
+          (pageSizeChange)="setPageSize($event)"
+        />
+      }
+    }
+  </section>
+</main>
+
+<dialog
+  #dialog
+  class="modal"
+  aria-labelledby="dialog-title"
+  (close)="dialogState.set(null)"
+  (click)="$event.target === dialog ? closeDialog() : null"
+>
+  @if (dialogState(); as state) {
+    @if (state.mode === 'create') {
+      <app-organisation-form (closed)="closeDialog()" />
+    } @else if (state.mode === 'edit') {
+      <app-organisation-form
+        [organisation]="state.organisation"
+        (saved)="openDialog({ mode: 'view', organisation: $event })"
+        (closed)="openDialog({ mode: 'view', organisation: state.organisation })"
+      />
+    } @else {
+      <app-organisation-details
+        [organisation]="state.organisation"
+        (edit)="openDialog({ mode: 'edit', organisation: state.organisation })"
+        (closed)="closeDialog()"
+      />
+    }
+  }
+</dialog>

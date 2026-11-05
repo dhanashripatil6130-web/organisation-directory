@@ -1,0 +1,64 @@
+<section class="details" aria-labelledby="dialog-title">
+  <header class="details__header">
+    <app-organisation-avatar class="details__avatar" [name]="organisation().name" [seed]="organisation().id" />
+    <div class="details__heading">
+      <h2 id="dialog-title" class="details__title">
+        @if (organisation().name) {
+          <bdi>{{ organisation().name }}</bdi>
+        } @else {
+          {{ 'table.unnamed' | t }}
+        }
+      </h2>
+      <app-organisation-status [status]="organisation().status" />
+    </div>
+  </header>
+
+  <div class="details__body">
+  @if (issues().length > 0) {
+    <div class="issues" role="note">
+      <h3 class="issues__title">{{ 'details.issues.title' | t }}</h3>
+      <ul class="issues__list">
+        @for (issue of issues(); track issue) {
+          <li>{{ issue | t }}</li>
+        }
+      </ul>
+    </div>
+  }
+
+  <dl class="facts">
+    <div class="fact">
+      <dt>{{ 'details.members' | t }}</dt>
+      <dd>
+        @if (organisation().memberCount !== null) {
+          {{ organisation().memberCount | number }}
+        } @else {
+          {{ 'table.missing' | t }}
+        }
+      </dd>
+    </div>
+    <div class="fact">
+      <dt>{{ 'details.created' | t }}</dt>
+      <dd>
+        @if (organisation().createdAt !== null) {
+          {{ organisation().createdAt | date: 'longDate' : 'UTC' }}
+        } @else {
+          {{ 'table.missing' | t }}
+        }
+      </dd>
+    </div>
+    <div class="fact fact--wide">
+      <dt>{{ 'details.owner' | t }}</dt>
+      <dd>{{ organisation().ownerEmail ?? ('table.missing' | t) }}</dd>
+    </div>
+    <div class="fact">
+      <dt>{{ 'details.id' | t }}</dt>
+      <dd>{{ organisation().id }}</dd>
+    </div>
+  </dl>
+
+  <div class="details__actions">
+    <button type="button" class="btn btn--primary" (click)="edit.emit()">{{ 'details.edit' | t }}</button>
+    <button type="button" class="btn" (click)="closed.emit()">{{ 'details.close' | t }}</button>
+  </div>
+  </div>
+</section>

@@ -1,0 +1,25 @@
+<header class="topbar">
+  <svg class="topbar__logo" viewBox="0 0 24 24" aria-hidden="true">
+    <rect x="3" y="3" width="8" height="8" rx="2" />
+    <rect x="13" y="3" width="8" height="8" rx="2" />
+    <rect x="3" y="13" width="8" height="8" rx="2" />
+    <rect x="13" y="13" width="8" height="8" rx="2" />
+  </svg>
+  <span class="topbar__title">{{ 'app.title' | t }}</span>
+</header>
+
+<div class="shell">
+  <nav class="sidebar" [attr.aria-label]="'nav.directory' | t">
+    <a class="sidebar__item" href="/" aria-current="page" [attr.aria-label]="'nav.directory' | t">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="3" width="8" height="8" rx="2" />
+        <rect x="13" y="3" width="8" height="8" rx="2" />
+        <rect x="3" y="13" width="8" height="8" rx="2" />
+        <rect x="13" y="13" width="8" height="8" rx="2" />
+      </svg>
+    </a>
+  </nav>
+  <div class="content">
+    <router-outlet />
+  </div>
+</div>

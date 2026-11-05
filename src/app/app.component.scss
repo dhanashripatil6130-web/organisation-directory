@@ -1,0 +1,96 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: block;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--header-height);
+  padding: 0 var(--space-6);
+  background: linear-gradient(90deg, var(--color-header), var(--color-header-end));
+  color: var(--color-on-brand);
+
+  &__logo {
+    width: var(--space-6);
+    height: var(--space-6);
+    fill: currentcolor;
+  }
+
+  &__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+  }
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  min-height: calc(100vh - var(--header-height));
+}
+
+.content {
+  min-width: 0;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-4) 0;
+  background: var(--color-surface);
+  border-right: var(--border-width) solid var(--color-border);
+
+  &__item {
+    display: grid;
+    place-items: center;
+    width: var(--control-height);
+    height: var(--control-height);
+    border-radius: var(--radius);
+    background: var(--color-brand-subtle);
+    color: var(--color-brand);
+
+    svg {
+      width: var(--space-6);
+      height: var(--space-6);
+      fill: none;
+      stroke: currentcolor;
+      stroke-width: 2;
+    }
+  }
+}
+
+@media (max-width: bp.$narrow) {
+  .topbar {
+    padding: 0 var(--space-4);
+  }
+
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sidebar {
+    display: none;
+  }
+}
+
+@media (min-width: bp.$compact) {
+  :host {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .shell {
+    grid-template-rows: minmax(0, 1fr);
+    height: calc(100dvh - var(--header-height));
+    min-height: 0;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+}
